@@ -1,7 +1,7 @@
 #! /usr/bin/python3.9
 
 """
-Run this code for blink your ThinkPad LED based on a Morse code!
+Run this code to blink your ThinkPad LED based on a Morse code!
 Compatible with python3.9+. No third-party library is required, implemented in pure python.
 Make sure that you have required permissions to write to led acpi file descriptor.
 
@@ -9,15 +9,15 @@ Installation:
     $ python3.9 -m pip install tmorse
 Basic usage:
     $ sudo tmorse
-        -> Insert input manually and it will blink your LED which is located by default values.
+        -> Insert input manually, and it will blink your LED, which is located by default values.
     $ echo "This is a test" | sudo tmorse --stdin
         -> Read from standard input.
     $ sudo tmorse -c custom_codes.json
-        -> Encode characters to morse based on your custom codes although
+        -> Encode characters to Morse based on your custom codes although
            you should follow the protocol.
-           ( e.g. {"م": "--"} )
+           (e.g. {"م": "--"})
     $ sudo tmorse --on-command 2 --off-command 0 -l "/proc/acpi/ibm/kbdlight" -m 0.7 --default-led-status OFF
-        -> Show the morse code by keyboard's backlit blinking.
+        -> Show the Morse code by keyboard's backlit blinking.
 
     See tmorse --help for additional information.
 
@@ -79,7 +79,7 @@ def get_data(args: argparse.Namespace) -> str:
     Determine how we should get the entering data based on cli arguments and actually getting it.
     """
     if args.input:
-        if args.input.isfile:
+        if args.input.is_file():
             with open(args.input, encoding='utf-8') as file:
                 return file.read()
         raise ValueError(f"{args.input!r} is not a file!")
