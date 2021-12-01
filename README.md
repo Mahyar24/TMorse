@@ -23,7 +23,7 @@ sudo apt install pipx
 Then install tmorse by using command below:
 
 ```bash
-sudo -E env "PATH=$PATH" pipx install --python python3.9 tmorse
+sudo -HE env "PATH=$PATH" pipx install --python python3.9 tmorse
 ```
 
 P.S: TMorse is supported by python3.9+.
