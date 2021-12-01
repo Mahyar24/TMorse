@@ -194,6 +194,7 @@ def run():
     """
     args = parse_args()
 
+    assert os.path.exists(args.led_path), f"{args.led_path} doesn't exist."
     assert os.access(
         args.led_path, os.W_OK
     ), f"Permission is denied to write on {args.led_path}"
