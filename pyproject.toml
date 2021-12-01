@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tmorse"
-version = "0.1.0"
+version = "0.1.6"
 description = "Blinking Morse code on Thinkpad LEDs"
 authors = ["Mahyar Mahdavi <Mahyar@Mahyar24.com>"]
 license = "GPLv3"

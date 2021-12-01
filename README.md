@@ -1,6 +1,6 @@
 # TMorse
 
-Run this code to blink your ThinkPad LED based on a Morse code!\
+Run this code to blink your ThinkPad LED with a hidden mysterious Morse code! ;)\
 Compatible with python3.9+. No third-party library is required, implemented in pure python.\
 Make sure that you have required permissions to write to led acpi file descriptor.
 
@@ -33,12 +33,12 @@ P.S: TMorse is supported by python3.9+.
 ```bash
 sudo tmorse
 ```
-→ Insert input manually, and it will blink your LED, which is located by default values.
+→ Insert input manually, and it will blink your LED, which its location is defined by default to be `/proc/acpi/ibm/led`.
 
 ```bash
 echo "This is a test" | sudo tmorse --stdin
 ```
-→ Insert input manually, and it will blink your LED, which is located by default values.
+→ Read the data from standard input.
 ```bash
 sudo tmorse -c custom_codes.json
 ```
