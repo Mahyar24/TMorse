@@ -35,6 +35,7 @@ import json
 import os
 import sys
 import time
+from functools import partial
 from typing import Final
 
 from .args import parse_args
@@ -47,21 +48,22 @@ WORD_GAP: Final = 7
 LOOP_GAP: Final = 10
 
 
-def check_presentation(character: str) -> bool:
+def check_presentation(character: str, codes: dict[str, str]) -> bool:
     """
     Check if a single character is defined for Morse encoding.
     """
-    return character.upper() in CODES.keys()
+    return character.upper() in codes.keys()
 
 
-def check_input(text: str) -> bool:
+def check_input(text: str, codes: dict[str, str]) -> bool:
     """
     Check if all characters are defined for Morse encoding.
     """
-    return all(map(check_presentation, text.replace(" ", "")))
+    check_partial = partial(check_presentation, codes=codes)
+    return all(map(check_partial, text.replace(" ", "")))
 
 
-def text_to_morse(text: str) -> str:
+def text_to_morse(text: str, codes: dict[str, str]) -> str:
     """
     Encode the text to morse codes.
     """
@@ -70,7 +72,7 @@ def text_to_morse(text: str) -> str:
         if character == " ":
             result += "/"
         else:
-            result += CODES[character] + " "
+            result += codes[character] + " "
     return result
 
 
@@ -80,7 +82,7 @@ def get_data(args: argparse.Namespace) -> str:
     """
     if args.input:
         if args.input.is_file():
-            with open(args.input, encoding='utf-8') as file:
+            with open(args.input, encoding="utf-8") as file:
                 return file.read()
         raise ValueError(f"{args.input!r} is not a file!")
 
@@ -97,7 +99,7 @@ def on_led(args: argparse.Namespace) -> None:
     """
     Turn the LED on.
     """
-    with open(args.led_path, "w", encoding='utf-8') as led:
+    with open(args.led_path, "w", encoding="utf-8") as led:
         led.write(args.on_command)
 
 
@@ -105,7 +107,7 @@ def off_led(args: argparse.Namespace) -> None:
     """
     Turn the LED off.
     """
-    with open(args.led_path, "w", encoding='utf-8') as led:
+    with open(args.led_path, "w", encoding="utf-8") as led:
         led.write(args.off_command)
 
 
@@ -161,18 +163,18 @@ def blink(morse_code: str, args: argparse.Namespace) -> None:
             time.sleep(args.multiplier * WORD_GAP)
 
 
-def main(args: argparse.Namespace) -> None:
+def main(args: argparse.Namespace, codes: dict[str, str]) -> None:
     """
     Main function. Glue everything together.
     """
     data = get_data(args).replace("\n", " ").strip()
-    if not check_input(data):
+    if not check_input(data, codes):
         raise ValueError(
             "There are some characters that I don't know how to encode."
             " use '-c/--codes-file for a custom json encoding file.'"
         )
 
-    morse_code = text_to_morse(data)
+    morse_code = text_to_morse(data, codes)
 
     try:
         blink(morse_code, args)
@@ -185,14 +187,21 @@ def main(args: argparse.Namespace) -> None:
             off_led(args)
 
 
-if __name__ == "__main__":
-    ARGS = parse_args()
+def run():
+    """
+    Run entrypoint.
+    """
+    args = parse_args()
 
     assert os.access(
-        ARGS.led_path, os.W_OK
-    ), f"Permission is denied to write on {ARGS.led_path}"
+        args.led_path, os.W_OK
+    ), f"Permission is denied to write on {args.led_path}"
 
-    with open(ARGS.codes_file, encoding='utf-8') as json_file:
-        CODES = json.load(json_file)
+    with open(args.codes_file, encoding="utf-8") as json_file:
+        codes = json.load(json_file)
 
-    main(ARGS)
+    main(args, codes)
+
+
+if __name__ == "__main__":
+    run()
