@@ -1,16 +1,32 @@
 # TMorse
 
-Run this code to blink your ThinkPad LED based on a Morse code!
-Compatible with python3.9+. No third-party library is required, implemented in pure python.
+Run this code to blink your ThinkPad LED based on a Morse code!\
+Compatible with python3.9+. No third-party library is required, implemented in pure python.\
 Make sure that you have required permissions to write to led acpi file descriptor.
+
+# Take a look
+
+![LED](./pics/LED.gif)
+![Backlit](./pics/Backlit.gif)
+![Decode](./pics/Decode.gif)
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install TMorse.
+Installation of tmorse is a little complicated due to need of superuser access.\
+Recommended way is using [pipx](https://github.com/pypa/pipx).
+First, install pipx:
 
 ```bash
-python3.9 -m pip install tmorse
+sudo apt install pipx
 ```
+
+Then install tmorse by using command below:
+
+```bash
+sudo -E env "PATH=$PATH" pipx install --python python3.9 tmorse
+```
+
+P.S: TMorse is supported by python3.9+.
 
 ## Usage
 
@@ -26,13 +42,13 @@ echo "This is a test" | sudo tmorse --stdin
 ```bash
 sudo tmorse -c custom_codes.json
 ```
-→  Encode characters to Morse based on your custom codes although
-           you should follow the protocol.
-           (e.g. {"م": "--"})
+→  Encode characters to Morse based on your custom codes, although you should follow the protocol. (e.g. {"م": "--"})
 ```bash
 sudo tmorse --on-command 2 --off-command 0 -l "/proc/acpi/ibm/kbdlight" -m 0.7 --default-led-status OFF
 ```
 → Show the Morse code by keyboard's backlit blinking.
+
+- check `sudo tmorse --help` for more info.
 
 
 

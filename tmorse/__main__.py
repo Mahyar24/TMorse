@@ -6,7 +6,7 @@ Compatible with python3.9+. No third-party library is required, implemented in p
 Make sure that you have required permissions to write to led acpi file descriptor.
 
 Installation:
-    $ python3.9 -m pip install tmorse
+    $ sudo apt install pipx && sudo -E env "PATH=$PATH" pipx install --python python3.9 tmorse
 Basic usage:
     $ sudo tmorse
         -> Insert input manually, and it will blink your LED, which is located by default values.
