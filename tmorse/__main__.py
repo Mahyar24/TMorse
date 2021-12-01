@@ -33,6 +33,7 @@ import argparse
 import getpass
 import json
 import os
+import pkgutil
 import sys
 import time
 from functools import partial
@@ -197,8 +198,12 @@ def run():
         args.led_path, os.W_OK
     ), f"Permission is denied to write on {args.led_path}"
 
-    with open(args.codes_file, encoding="utf-8") as json_file:
-        codes = json.load(json_file)
+    if args.codes_file is not None:
+        with open(args.codes_file, encoding="utf-8") as json_file:
+            codes = json.load(json_file)
+    else:
+        codes_data = pkgutil.get_data(__name__, "data/codes.json").decode("utf-8")
+        codes = json.loads(codes_data)
 
     main(args, codes)
 

@@ -66,7 +66,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-c",
         "--codes-file",
-        default="data/codes.json",
         type=pathlib.Path,
         help="Path to a json file which contains morse codes for every character."
         " Default file only supports ASCII characters.",
